@@ -37,8 +37,8 @@ rem Create the new folder
 
     rem If the configuration exist, set folder to his value
     rem Else remove folder
-    if exist E:\Programmation\Utilities\project-creator\user-folder.conf (
-        set /P folder=<E:\Programmation\Utilities\project-creator\user-folder.conf
+    if exist %~dp0user-folder.conf (
+        set /P folder=<%~dp0user-folder.conf
     ) else set folder=
 
     rem Only if folder is defined, create the project
@@ -61,7 +61,7 @@ rem Create the new folder
 
             rem Create the github repo
             rem The argument passed to the python file isn't capitalized
-            python E:\Programmation\Utilities\project-creator\python\setup-github.py --project %1 --user %user% --password %password%
+            python %~dp0python\setup-github.py --project %1 --user %user% --password %password%
 
             del geckodriver.log
             git init
@@ -81,7 +81,7 @@ rem Setup the projects folder
 :SetupFolder
     if [%2]==[] echo You must refer an absolute folder path & goto :eof
 
-    python E:\Programmation\Utilities\project-creator\python\save-folder.py --folder %2
+    python %~dp0python\save-folder.py --folder %2 --conf %~dp0user-folder.conf
     goto :eof
 
 rem Help statement
