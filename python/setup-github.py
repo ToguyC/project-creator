@@ -1,5 +1,4 @@
 import os, sys
-from bs4 import BeautifulSoup as Soup
 from argparse import ArgumentParser
 from selenium import webdriver
 
