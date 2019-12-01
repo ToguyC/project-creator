@@ -9,7 +9,7 @@ Firstly, you need to have python installed on you machine. If it's not the case,
 <br>
 After that, you'll need to install a package. Just write :
 ```sh
-sudo pip install selenium
+pip install selenium
 ```
 And now, you just have to setup the Environement Variable : PATH, with the location of the "create.bat" file.
 
