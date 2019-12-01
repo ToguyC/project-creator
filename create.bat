@@ -28,6 +28,8 @@ rem --------------------------------------------------------------------------
 rem Create the new folder
 :CreateFolder
     if [%2]==[] (set language=%default_language%) else (set language=%2)
+    if not [%3]==[] (set user=%3)
+    if not [%4]==[] (set password=%4)
 
     call :FirstUp result %language%
     set language_folder=%result%
@@ -48,7 +50,7 @@ rem Create the new folder
 
         rem Create the github repo
         rem The argument passed to the python file isn't capitalized
-        python E:\Programmation\Utilities\project-creator\python\setup-github.py --project %1
+        python E:\Programmation\Utilities\project-creator\python\setup-github.py --project %1 --user %user% --password %password%
 
         del geckodriver.log
         git init
@@ -57,14 +59,16 @@ rem Create the new folder
         git add .
         git commit -m "Initial commit"
         git push -u origin master
+        cls
         code .
+        exit
     ) else echo This project already exists
     goto :eof
 
 rem Help statement
 rem MUST USE "" ([ESC] special char) to trigger color modification
 :Help
-    echo [36m----------------------------------------------------------[0m
+    echo [36m---------------------------------------------------------------------------------[0m
     echo.
     echo This command is used to create a new project
     echo and open it in vscode. In addition, it will create
@@ -77,7 +81,12 @@ rem MUST USE "" ([ESC] special char) to trigger color modification
     echo.
     echo [32m(By default : %folder%%default_language_folder%)[0m
     echo.
-    echo [36m----------------------------------------------------------[0m
+    echo Your GitHub user and password must be set as the [31m[4mTHIRD[24m[0m and [31m[4mFOURTH[24m[0m argument
+    echo when you will create the project
+    echo.
+    echo                                  [36mNo data is saved[0m
+    echo.
+    echo [36m---------------------------------------------------------------------------------[0m
     goto :eof
 
 :FirstUp
