@@ -1,4 +1,4 @@
-import os, sys
+import os, sys, time
 from argparse import ArgumentParser
 from selenium import webdriver
 
@@ -34,6 +34,7 @@ def createRepo():
     # Create repo
     python_action = browser.find_element_by_xpath("//*[@id='repository_name']")
     python_action.send_keys(project)
+    time.sleep(0.5)
     python_action = browser.find_element_by_css_selector("button.first-in-line")
     python_action.submit()
 
