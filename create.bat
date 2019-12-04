@@ -74,7 +74,7 @@ rem Create the new folder
             code .
             exit
         ) else echo This project already exists
-    ) else echo [31mYout muse refer a project folder first[0m. Use "[32mcreate --help/-H[0m" to see the help
+    ) else echo [31mYou must refer a project folder first[0m. Use "[32mcreate --help/-H[0m" to see the help
     goto :eof
 
 rem Setup the projects folder
