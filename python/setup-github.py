@@ -11,7 +11,7 @@ project = args.project
 user = args.user
 password = args.password
 
-browser = webdriver.Firefox(executable_path="E:\\Programmation\\Utilities\\project-creator\\driver\\geckodriver.exe")  # Optional argument, if not specified will search path.
+browser = webdriver.Firefox(executable_path="C:\\Users\\cavagnat\\Documents\\Programmation\\Utilities\\project-creator\\driver\\geckodriver.exe")  # Optional argument, if not specified will search path.
 browser.get('http://github.com/login');
 
 def createRepo():

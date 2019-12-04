@@ -65,7 +65,7 @@ rem Create the new folder
 
             del geckodriver.log
             git init
-            git remote add origin https://github.com/TanguyCavagna/%1.git
+            git remote add origin https://github.com/%user%/%1.git
             type nul > README.md
             git add .
             git commit -m "Initial commit"
