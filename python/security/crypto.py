@@ -1,6 +1,6 @@
 from cryptography.fernet import Fernet
 from argparse import ArgumentParser
-import hashlib, random, string
+import hashlib, random, string, os
 
 class Crypto():
 
@@ -23,11 +23,14 @@ class Crypto():
             config.write('\n'.join(encrypted_fields))
 
     def decrypt(self):
-        with open(self.folder, 'r+') as config:
+        if (os.path.isfile(self.folder)):
+            with open(self.folder, 'r+') as config:
+                results = []
+                for line in config.readlines():
+                    results.append(self.cipher_suite.decrypt(line.encode('utf-8')))
+
+            results = [decrypted.decode('utf-8') for decrypted in results]
+        else:
             results = []
-            for line in config.readlines():
-                results.append(self.cipher_suite.decrypt(line.encode('utf-8')))
-
-        results = [decrypted.decode('utf-8') for decrypted in results]
-
+            
         return results
