@@ -6,13 +6,15 @@ parser = ArgumentParser()
 parser.add_argument('-p', '--project', default="python", type=str, help='project name')
 parser.add_argument('-u', '--user', default=None, type=str, help='github user')
 parser.add_argument('-P', '--password', default=None, type=str, help='user password')
+parser.add_argument('-D', '--driver', default="", type=str, help='driver path')
 args = parser.parse_args()
 project = args.project
 user = args.user
 password = args.password
+driver = args.driver
 
-browser = webdriver.Firefox(executable_path="C:\\Users\\cavagnat\\Documents\\Programmation\\Utilities\\project-creator\\driver\\geckodriver.exe")  # Optional argument, if not specified will search path.
-browser.get('http://github.com/login');
+browser = webdriver.Firefox(executable_path=driver + "\\geckodriver.exe")
+browser.get('http://github.com/login')
 
 def createRepo():
     # Login
