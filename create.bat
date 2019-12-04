@@ -18,6 +18,7 @@ if "%1"=="--folder" goto :SetupFolder
 if "%1"=="-F" goto :SetupFolder
 if "%1"=="--gui" goto :GUI
 if "%1"=="-G" goto :GUI
+if "%1"=="--config" goto :UserConfig
 goto :CreateFolder
 
 rem --------------------------------------------------------------------------
@@ -31,8 +32,6 @@ rem --------------------------------------------------------------------------
 rem Create the new folder
 :CreateFolder
     if [%2]==[] (set language=%default_language%) else (set language=%2)
-    if not [%3]==[] (set user=%3)
-    if not [%4]==[] (set password=%4)
 
     call :FirstUp result %language%
     set language_folder=%result%
@@ -63,18 +62,24 @@ rem Create the new folder
 
             rem Create the github repo
             rem The argument passed to the python file isn't capitalized
-            python %~dp0python\setup-github.py --project %1 --driver %~dp0driver --user %user% --password %password%
-
-            del geckodriver.log
-            git init
-            git remote add origin https://github.com/%user%/%1.git
-            type nul > README.md
-            git add .
-            git commit -m "Initial commit"
-            git push -u origin master
-            cls
-            code .
-            exit
+            python %~dp0python\setup-github.py --project %1 --folder %~dp0
+            
+            rem Get user from temp file
+            FOR /F "tokens=* USEBACKQ" %%F IN (`type %~dp0output.txt`) DO (
+                set user=%%F
+                del geckodriver.log
+                git init
+                git remote add origin https://github.com/%user%/%1.git
+                type nul > README.md
+                git add .
+                git commit -m "Initial commit"
+                git push -u origin master
+                rem Delete temp file
+                del %~dp0output.txt
+                cls
+                code .
+                exit
+            )
         ) else echo This project already exists
     ) else echo [31mYou must refer a project folder first[0m. Use "[32mcreate --help/-H[0m" to see the help
     goto :eof
@@ -89,6 +94,15 @@ rem Setup the projects folder
 rem GUI
 :GUI
     python %~dp0python\GUI.py --folder %~dp0user.conf
+    goto :eof
+
+rem Setup the user login information
+:UserConfig
+    if not [%2]==[] (set user=%2)
+    if not [%3]==[] (set password=%3)
+
+    python %~dp0python\save-user-infos.py --conf %~dp0user.conf --name %user% --password %password%
+
     goto :eof
 
 rem Help statement

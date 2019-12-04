@@ -1,27 +1,32 @@
 import os, sys, time
 from argparse import ArgumentParser
 from selenium import webdriver
+from security.crypto import Crypto
 
 parser = ArgumentParser()
 parser.add_argument('-p', '--project', default="python", type=str, help='project name')
-parser.add_argument('-u', '--user', default=None, type=str, help='github user')
-parser.add_argument('-P', '--password', default=None, type=str, help='user password')
-parser.add_argument('-D', '--driver', default="", type=str, help='driver path')
+parser.add_argument('-F', '--folder', default="", type=str, help='project name')
 args = parser.parse_args()
 project = args.project
-user = args.user
-password = args.password
-driver = args.driver
+folder = args.folder
+driver = folder + "driver"
+conf = folder + "user.conf"
 
 browser = webdriver.Firefox(executable_path=driver + "\\geckodriver.exe")
 browser.get('http://github.com/login')
 
+crypto = Crypto(conf)
+
 def createRepo():
+    user_infos = crypto.decrypt()
+
     # Login
     python_action = browser.find_element_by_xpath("//*[@id='login_field']")
-    python_action.send_keys(user)
+    python_action.send_keys(user_infos[0])
+    with open(folder + "output.txt", 'w+') as temp:
+        temp.write(user_infos[0])
     python_action = browser.find_element_by_xpath("//*[@id='password']")
-    python_action.send_keys(password)
+    python_action.send_keys(user_infos[1])
     python_action = browser.find_element_by_xpath("/html/body/div[3]/main/div/form/div[3]/input[8]")
     python_action.click()
 
