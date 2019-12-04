@@ -16,6 +16,8 @@ if "%1"=="--help" goto :Help
 if "%1"=="-H" goto :Help
 if "%1"=="--folder" goto :SetupFolder
 if "%1"=="-F" goto :SetupFolder
+if "%1"=="--gui" goto :GUI
+if "%1"=="-G" goto :GUI
 goto :CreateFolder
 
 rem --------------------------------------------------------------------------
@@ -82,6 +84,11 @@ rem Setup the projects folder
     if [%2]==[] echo You must refer an absolute folder path & goto :eof
 
     python %~dp0python\save-folder.py --folder %2 --conf %~dp0user-folder.conf
+    goto :eof
+
+rem GUI
+:GUI
+    python %~dp0python\GUI.py --folder %~dp0user.conf
     goto :eof
 
 rem Help statement
