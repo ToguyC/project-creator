@@ -34,9 +34,9 @@ class GUI(QWidget):
         self.show()
 
     def initControls(self):
-        createButton = QPushButton('Create')
+        createButton = Button('Create')
         createButton.clicked.connect(self.createProject)
-        cancelButton = QPushButton('Cancel')
+        cancelButton = Button('Cancel')
         cancelButton.clicked.connect(self.btnQuit_click)
         loginButton = Button('Login', self)
         loginButton.resize(40, 18)
@@ -95,11 +95,13 @@ class GUI(QWidget):
         
         if (user_infos != []):
             if (self.name_edit.text() != "" and self.main_folder_edit.text() != "" and self.language_edit.text() != ""):
-                if (os.path.isdir(and self.main_folder_edit.text())):
+                if (os.path.isdir(self.main_folder_edit.text())):
                     if ((not ' ' in self.name_edit.text()) and (not ' ' in self.language_edit.text())):
                         subprocess.call([sys.executable, os.path.join(self.path, 'setup-github.py'), '--project', self.name_edit.text(), '--folder', os.path.join(self.path, '..\\')])
                         
                         main_path = self.main_folder_edit.text() + "\\" + self.language_edit.text().capitalize()
+                        if (not os.path.isdir(main_path)):
+                            os.mkdir(main_path)
                         os.mkdir(main_path + "\\" + self.name_edit.text())
                         os.chdir(main_path + "\\" + self.name_edit.text())
                         os.system('git init')
